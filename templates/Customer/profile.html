@@ -1,0 +1,855 @@
+{% extends 'Customer/base.html' %}
+
+{% load static %}
+{% block content %}
+
+            <!-- Page Title -->
+            <div class="bg-light py-4 mb-4 mb-lg-10" style="text-align: center;">
+                <h8 >Profile</h8>
+            </div>
+            <!-- Page Title -->
+
+
+                <!-- For Alert Message -->
+                {% include 'Customer/alert.html' %}
+
+               
+            <!-- Product Category -->
+            <div class="container">
+                <div class="row g-lg-4">
+                    <!-- Sidebar -->
+                    <section class="col-lg-4">
+                        <div class="offcanvas offcanvas-collapse offcanvas-start rounded-3 shadow" id="category-sidebar" style="max-width: 23rem;">
+                            <div class="offcanvas-header align-items-center shadow-sm">
+                                <h2 class="h5 mb-0">Filters</h2>
+                                <button class="btn-close ms-auto" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                            </div>
+                            <div class="offcanvas-body p-lg-8">
+                                <div class="widget widget-categories pb-5 mb-5 border-bottom">
+                                    <div class="d-flex align-items-center fs-sm mb-3">
+                                        <a class="blog-article-meta-link" href="#">
+                                            <div class="avatar">
+                                                <img src="{% static 'smart/assets/img/blog/avatar/logo.jpg' %}" alt="Selinda Romer">
+                                            </div>
+                                        </a>
+                                        <div class="d-flex flex-column flex-grow-1">
+                                            <a style="color:#000;font-weight:bold;" class="blog-article-meta-link">
+                                                {{user.name}} {{user.lname}}
+                                            </a>
+                                            <a  class="blog-article-meta-link">
+                                                {{user.phone_no}}
+                                            </a>
+                                            <a  class="blog-article-meta-link">
+                                                {{user.email_id}}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <!-- Categories -->
+                                <div class="widget widget-categories pb-5 mb-5 border-bottom">
+                                    <h3 class="widget-title">Shipping Address</h3>
+                                    <div class="accordion mt-n2" id="shop-categories">
+                
+                                        <!-- Address -->
+                                        
+                                        {% for i in address %}
+                                            <div class="accordion-item">
+                                                <h3 style="display: inline-block;" class="accordion-header">
+                                                    <a class="accordion-button collapsed" href="#category-cameras" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="category-cameras">Address-{{forloop.counter}}</a>
+                                                </h3>
+                                                <a href="{% url 'de_address' i.id %}" style="display: inline-block;" class="btn btn-link text-danger " title="Remove">
+                                                    <i class="ri-close-circle-line fs-5 me-2"></i>
+                                                </a>
+                                                <div class="accordion-collapse collapse" id="category-cameras" data-bs-parent="#shop-categories">
+                                                    <div class="accordion-body">
+                                                        <div class="widget widget-links border-start">
+                                                            <ul class="widget-list">
+                                                                <li class="widget-list-item border-bottom pb-2">
+                                                                    <a class="widget-list-link d-flex justify-content-between align-items-center" >
+                                                                        {{i.fname}} {{i.lname}}<br>
+                                                                        {{i.phone_no}} <br>
+                                                                        {{i.email}} <br>
+                                                                        {{i.hname}} (H), {{i.street}}<br>
+                                                                        {{i.city}} (H), {{i.district}}<br>
+                                                                        {{i.state}} (H),pin-{{i.pin}}<br>
+                                                                        
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                        
+                                  
+                                        
+
+                                    </div>
+                                </div>
+                       
+                                
+                            </div>
+                        </div>
+                    </section>
+                    <!-- Sidebar -->
+
+                    <!-- Content -->
+                    <aside class="col-lg-8">
+                     
+                        <div class="card bg-light border-gray-200 mt-5 mb-10">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center justify-content-between">
+                                   
+
+                                    <ul class="nav nav-pills flex-nowrap" id="pills-tab" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link active py-2 px-3" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
+                                                My Orders
+                                            </button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link py-2 px-3" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">
+                                            Shipping Address
+                                            </button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link py-2 px-3" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-service" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">
+                                            Product Service
+                                            </button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link py-2 px-3" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-password" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">
+                                            Change Password
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+            
+
+                        <div class="tab-content" id="pills-tabContent">
+    
+                           
+
+<!-- ###################################################### -->
+                            <!-- My Order Div -->
+                            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                                    
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-hover table-borderless fs-sm mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th class="align-middle">Sl No</th>
+                                                    <th class="align-middle">Product</th>
+                                                    <th class="align-middle">Rate</th>
+                                                    <th class="align-middle">Qty</th>
+                                                    <th class="align-middle">Date</th>
+                                                    <th class="align-middle">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                {% for i in order %}
+                                                <tr>
+                                                    <td class="align-middle">
+                                                     {{forloop.counter}}
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        <div class="avatar" style="border: none;">
+                                                            <img src="{{i.product.image.url}}" alt="Selinda Romer">
+                                                        </div>
+                                                        <span class="text-dark fw-medium">{{ i.product.name }}</span>
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        <span class="text-dark fw-medium">{{i.product.selling_price}}</span>
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        <span class="text-dark fw-medium">{{i.quantity}}</span>
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        <span class="text-dark fw-medium">{{i.ordered_date|date:"j M, Y"}}</span>
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        <span class="text-dark fw-medium"><a class="btn btn-sm btn-primary" href="{% url 'pdf' i.id %}">Download Bill</a></span>
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                                
+                                            </tbody>
+                                        </table>
+                                    </div>
+                            </div>
+
+
+            <!--##############################  -->
+
+                    <script>
+                        function validateaddress()
+                        {
+                            var firstname=document.getElementById('first_name').value.trim();
+                            var lastname=document.getElementById('last_name').value.trim();
+                            var email=document.getElementById('email').value.trim();
+                            var phone=document.getElementById('phone_number').value.trim();
+                            var state=document.getElementById('state').value.trim();
+                            var district=document.getElementById('district').value.trim();
+                            var house=document.getElementById('housename').value.trim();
+                            var street=document.getElementById('street').value.trim();
+                            var city=document.getElementById('city').value.trim();
+                            var pin=document.getElementById('pin').value.trim();
+                            var expr = /^[6-9]\d{9}$/;
+                            var pin_expr = /^[0-9]\d{5}$/;
+            
+                            if(firstname=="")
+                            {
+                                document.getElementById('firstname_error').style.display="block";
+                                document.getElementById('firstname_error').innerHTML="**Please enter first name";
+                                return false;
+                            }
+                            if (/[^a-zA-Z^\s]/.test(firstname))
+                                {
+                                    document.getElementById('firstname_error').style.display="block";
+                                    document.getElementById('firstname_error').innerHTML="**Only Alphabets Allowed";
+                                    return false;
+                                }
+                            else{
+                                    document.getElementById('firstname_error').style.display="none";
+                                }
+
+                            if(lastname=="")
+                            {
+                                document.getElementById('lastname_error').style.display="block";
+                                document.getElementById('lastname_error').innerHTML="**Please enter last name";
+                                return true;
+                            }
+                            if (/[^a-zA-Z^\s]/.test(lastname))
+                                {
+                                    document.getElementById('lastname_error').style.display="block";
+                                    document.getElementById('lastname_error').innerHTML="**Only Alphabets Allowed";
+                                    return false;
+                                }
+                            else{
+                                    document.getElementById('lastname_error').style.display="none";
+                                }
+                            
+                            if(email=="")
+                            { 
+                                document.getElementById('email_error').style.display="block";
+                                document.getElementById('email_error').innerHTML="**Please Enter Email";
+                                return false;
+                            }  
+                            if(email.indexOf('@')<=0){
+                                document.getElementById('email_error').style.display="block";
+                                document.getElementById('email_error').innerHTML="**Invalid  Email Address";
+                                return false;
+                            }     
+                            if ((email.charAt(email.length-4)!='.') && (email.charAt(email.length-3)!='.')) {
+                                document.getElementById('email_error').style.display="block";
+                                document.getElementById('email_error').innerHTML="**Invalid  Email Address";
+                                return false;
+                            }   
+                            else{
+                                document.getElementById('email_error').style.display="none";
+                            }
+                            if(phone=="")
+                            {
+                                document.getElementById('phone_error').style.display = "block";
+            
+                                document.getElementById('phone_error').innerHTML="**PleaseEnter  phone number";
+                                return false;
+                            }
+                            if(phone!="" && expr.test(phone)==false){
+                                document.getElementById('phone_error').style.display= "block";
+                                document.getElementById('phone_error').innerHTML ="Invalid Phone number";
+                                return false;
+                            }
+                            else
+                            {
+                                document.getElementById('phone_error').style.display = "none";
+                            
+                            }
+                            if(state=="")
+                            {
+                                document.getElementById('state_error').style.display="block";
+                                document.getElementById('state_error').innerHTML="**Please select a state";
+                                return false;
+                            }
+                            else
+                            {
+                                document.getElementById('state_error').style.display = "none";
+                            }
+
+                            if(district=="")
+                            {
+                                document.getElementById('district_error').style.display="block";
+                                document.getElementById('district_error').innerHTML="**Please select a district";
+                                return false;
+                            }
+                            else
+                            {
+                                document.getElementById('district_error').style.display = "none";
+                            
+                            }
+
+                            if(house=="")
+                            {
+                                document.getElementById('house_error').style.display="block";
+                                document.getElementById('house_error').innerHTML="**Please enter house name";
+                                return false;
+                            }
+                            else
+                            {
+                                document.getElementById('house_error').style.display = "none";
+                            
+                            }
+
+                            if(street=="")
+                            {
+                                document.getElementById('street_error').style.display="block";
+                                document.getElementById('street_error').innerHTML="**Please enter street name";
+                                return false;
+                            }
+                            else
+                            {
+                                document.getElementById('street_error').style.display = "none";
+                            
+                            }
+
+                            if(city=="")
+                            {
+                                document.getElementById('city_error').style.display="block";
+                                document.getElementById('city_error').innerHTML="**Please enter city ";
+                                return false;
+                            }
+                            else
+                            {
+                                document.getElementById('city_error').style.display = "none";
+                            
+                            }
+
+                            if(pin=="")
+                            {
+                                document.getElementById('pin_error').style.display="block";
+                                document.getElementById('pin_error').innerHTML="**Please enter pin ";
+                                return false;
+                            }
+                            if(pin!="" && pin_expr.test(pin)==false){
+                                document.getElementById('pin_error').style.display= "block";
+                                document.getElementById('pin_error').innerHTML ="Invalid pin number";
+                                return false;
+                            }
+                            else
+                            {
+                                document.getElementById('pin_error').style.display = "none";
+                                return true;
+                            
+                            }
+                          
+                        }
+                </script>
+
+                            <!-- Shipping address -->
+                            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                                <div class="border border-gray-200 rounded-3 p-4">
+                                <form method="post" action="{% url 'useraddress' %}" novalidate="novalidate" onsubmit="return validateaddress();">
+						        {% csrf_token %}
+                                    
+                                    <h6 class="pb-4 mb-4 border-bottom">Shipping address</h6>
+                                    <!-- Title -->
+        
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="mb-4">
+                                                <label class="form-label" for="billing-fn">First Name</label>
+                                                <input class="form-control" type="text" name="fname" id="first_name" onblur="return validateaddress()" onKeyUp="return validateaddress()">
+                                                <span id="firstname_error" style="color:red;font-size:12px;"></span>
+                                            </div>
+                                        </div>
+        
+                                        <div class="col-sm-6">
+                                            <div class="mb-4">
+                                                <label class="form-label" for="billing-ln">Last Name</label>
+                                                <input class="form-control" type="text" name="lname" id="last_name" onblur="return validateaddress()" onKeyUp="return validateaddress()">
+                                                <span id="lastname_error" style="color:red;font-size:12px;"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+        
+                                   
+        
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="mb-4">
+                                                <label class="form-label" for="billing-email">Email</label>
+                                                <input class="form-control" name="email" type="email" id="email" onblur="return validateaddress()" onKeyUp="return validateaddress()">
+                                                <span id="email_error" style="color:red;font-size:12px;"></span>
+                                            </div>
+                                        </div>
+        
+                                        <div class="col-sm-6">
+                                            <div class="mb-4">
+                                                <label class="form-label" for="billing-phone">Phone Number</label>
+                                                <input class="form-control" name="phn" type="tel" maxlength="10" id="phone_number"  onblur="return validateaddress()" onKeyUp="return validateaddress()">
+                                                <span id="phone_error" style="color:red;font-size:12px;"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+        
+                                   
+        
+                                    <div class="row">
+                                        
+                                        <div class="col-sm-6">
+                                            <div class="mb-4">
+                                                <label class="form-label"  for="billing-state">State</label>
+                                                <select class="form-select" name="state" id="state" onblur="return validateaddress()" onclick="return validateaddress()" onKeyUp="return validateaddress()" onchange="return validateform()">
+                                                    <option value="">Choose state</option>
+                                                    <option value="Kerala">Kerala</option>
+                                                    <option value="Thamilnadu">Thamilnadu</option>
+                                                    <option value="Karnadaka">Karnadaka</option>
+                                                </select>
+                                                <span id="state_error" style="color:red;font-size:12px;"></span>
+                                            </div>
+                                        </div>
+        
+                                        <div class="col-sm-6">
+                                            <div class="mb-4">
+                                                <label class="form-label" for="billing-state">District</label>
+                                                <select class="form-select" name="district" id="district"  onblur="return validateaddress()" onclick="return validateaddress()" onKeyUp="return validateaddress()" onchange="return validateform()">
+                                                    <option value="">Choose District</option>
+                                                    <option value="Ernakulam">Ernakulam</option>
+                                                    <option value="Wayanad">Wayanad</option>
+                                                    <option value="Nilgiri">Nilgiri</option>
+                                                    <option value="Kollam">Kollam</option>
+                                                    <option value="Kozhikode">Kozhikode</option>
+                                                </select>
+                                                <span id="district_error" style="color:red;font-size:12px;"></span>
+                                            </div>
+                                        </div>
+        
+                                        
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="mb-4">
+                                                <label class="form-label" for="billing-email">House name/No</label>
+                                                <input class="form-control" name="hname" type="text" id="housename" onblur="return validateaddress()" onKeyUp="return validateaddress()">
+                                                <span id="house_error" style="color:red;font-size:12px;"></span>
+                                            
+                                            </div>
+                                        </div>
+        
+                                        <div class="col-sm-6">
+                                            <div class="mb-4">
+                                                <label class="form-label" for="billing-phone">Street</label>
+                                                <input class="form-control" name="street" type="text" id="street" onblur="return validateaddress()" onKeyUp="return validateaddress()">
+                                                <span id="street_error" style="color:red;font-size:12px;"></span>
+                                            
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="mb-4">
+                                                <label class="form-label" for="billing-email">City</label>
+                                                <input class="form-control" name="city" type="text" id="city"  onblur="return validateaddress()" onKeyUp="return validateaddress()">
+                                                <span id="city_error" style="color:red;font-size:12px;"></span>
+                                            </div>
+                                        </div>
+        
+                                        <div class="col-sm-6">
+                                            <div class="mb-4">
+                                                <label class="form-label" for="billing-phone">Postal code</label>
+                                                <input class="form-control" name="pin" type="tel" maxlength="6" id="pin" onblur="return validateaddress()" onKeyUp="return validateaddress()">
+                                                <span id="pin_error" style="color:red;font-size:12px;"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-none d-lg-flex align-items-center justify-content-between mt-8">
+                                        <button class="btn btn-primary">
+                                            <span class="d-none d-sm-inline">Submit</span>
+                                        </button>
+                                    </div>
+                            </form>
+                                </div>
+                            </div>
+
+            <!--##############################  -->
+
+
+
+                    <script>
+                        function validateservice()
+                        {
+                            var category=document.getElementById('category').value.trim();
+                            var brand=document.getElementById('brand').value.trim();
+                            var model=document.getElementById('model').value.trim();
+                            var modelno=document.getElementById('modelno').value.trim();
+                            var fileInput =document.getElementById('bill');
+                            var issue=document.getElementById('issue').value.trim();
+                            
+
+                            var file = fileInput.files[0];
+                            var allowedExtensions = /(\.pdf)$/i;
+                       
+
+                            if(category=="")
+                            {
+                                document.getElementById('category_error').style.display="block";
+                                document.getElementById('category_error').innerHTML="**Please select category ";
+                                return false;
+                            }
+                            else
+                            {
+                                document.getElementById('category_error').style.display = "none";
+                            }
+
+
+                            // for brand validation
+                            if(brand=="")
+                            {
+                                document.getElementById('brand_error').style.display="block";
+                                document.getElementById('brand_error').innerHTML="**Please enter brand name ";
+                                return false;
+                            }
+                            else
+                            {
+                                document.getElementById('brand_error').style.display = "none";
+                            }
+
+                            if(model=="")
+                            {
+                                document.getElementById('model_error').style.display="block";
+                                document.getElementById('model_error').innerHTML="**Please enter model name ";
+                                return false;
+                            }
+                            else
+                            {
+                                document.getElementById('model_error').style.display = "none";
+                            }
+
+                            if(modelno=="")
+                            {
+                                document.getElementById('modelno_error').style.display="block";
+                                document.getElementById('modelno_error').innerHTML="**Please enter model number ";
+                                return false;
+                            }
+                            else
+                            {
+                                document.getElementById('modelno_error').style.display = "none";
+                            }
+
+                            if (!file) 
+                            {
+                                document.getElementById('bill_error').style.display="block";
+                                document.getElementById('bill_error').innerHTML="**Please select bill";
+                                return false;
+                            }
+                            var fileName = file.name;
+                            var fileExtension = fileName.split('.').pop().toLowerCase();
+                            if (fileExtension !== 'pdf'){
+                                document.getElementById('bill_error').style.display="block";
+                                document.getElementById('bill_error').innerHTML="**Please select pdf file";
+                                return false;
+                            }
+                            else{
+                                document.getElementById('bill_error').style.display = "none";
+                            } 
+
+                            if(issue=="")
+                            {
+                                document.getElementById('issue_error').style.display="block";
+                                document.getElementById('issue_error').innerHTML="**Please enter the issue ";
+                                return false;
+                            }
+                            else
+                            {
+                                document.getElementById('issue_error').style.display = "none";
+                                return true;
+                            }
+                        
+                        }
+                </script>
+                        
+                        <div class="tab-pane fade" id="pills-service" role="tabpanel" aria-labelledby="pills-profile-tab">
+                            <!-- Title -->
+    
+                            <!-- Accordion-->
+                            <div class="accordion mb-4" id="payment-method">
+                                <div class="accordion-item">
+                                    <h3 class="accordion-header">
+                                        <a class="accordion-button" href="#card" data-bs-toggle="collapse">
+                                            <i class="ri-bank-card-line fs-lg me-2 align-middle"></i>
+                                            Request for service
+                                        </a>
+                                    </h3>
+                                    
+                                    <div class="accordion-collapse collapse show" id="card" data-bs-parent="#payment-method">
+                                        <div class="accordion-body">
+                                           
+                                            <div class="credit-card-wrapper"></div>
+                                            
+                                            <form method="post" action="{% url 'View_Service' %}" enctype="multipart/form-data" onsubmit="return validateservice()">
+                                                {% csrf_token %}
+                                                    
+
+
+                                                <div class="row">
+                                                        
+                                                    <div class="col-sm-6">
+                                                        <div class="mb-4">
+                                                            <label class="form-label"  for="billing-state">Category</label>
+                                                            <select class="form-select" name="category" id="category"  onblur="return validateservice()" onKeyUp="return validateservice()" onclick="return validateservice()">
+                                                                <option value="">Choose Category</option>
+                                                                {% for i in category %}
+                                                                <option >{{i.name}}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                             <span id="category_error" style="color:red;font-size:12px;"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="mb-4">
+                                                            <label class="form-label" for="billing-fn">Brand Name :</label>
+                                                            <input class="form-control" type="text" name="brand" id="brand" onblur="return validateservice()" onKeyUp="return validateservice()">
+                                                             <span id="brand_error" style="color:red;font-size:12px;"></span>
+                                                        </div>
+                                                    </div>
+                                                 
+                    
+                                                    
+                                                </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-6">
+                                                            <div class="mb-4">
+                                                                <label class="form-label" for="billing-fn">Model:</label>
+                                                                <input class="form-control" type="text" name="model" id="model" onblur="return validateservice()" onKeyUp="return validateservice()">
+                                                                <span id="model_error" style="color:red;font-size:12px;"></span>
+                                                            </div>
+                                                        </div>
+                        
+                                                        <div class="col-sm-6">
+                                                            <div class="mb-4">
+                                                                <label class="form-label" for="billing-ln">Model Number :</label>
+                                                                <input class="form-control" type="text" name="model_no" id="modelno" onblur="return validateservice()" onKeyUp="return validateservice()">
+                                                                <span id="modelno_error" style="color:red;font-size:12px;"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                        
+                                                   
+                        
+                                                    <div class="row">
+                                                        <div class="col-sm-6">
+                                                            <div class="mb-4">
+                                                                <label class="form-label" for="billing-email">Smart Store Purchase Bill</label>
+                                                                <input class="form-control" name="bill" type="file" id="bill" onblur="return validateservice()"  onKeyUp="return validateservice()" onchange="return validateservice()">
+                                                                <span id="bill_error" style="color:red;font-size:12px;"></span>
+                                                            </div>
+                                                        </div>
+                        
+                                                        <div class="col-sm-6">
+                                                            <div class="mb-4">
+                                                                <label class="form-label" for="billing-phone">Issues</label>
+                                                                <input class="form-control" name="issue" type="text" id="issue" onblur="return validateservice()" onKeyUp="return validateservice()">
+                                                                <span id="issue_error" style="color:red;font-size:12px;"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                        
+                                                  
+                                                    <div class="d-none d-lg-flex align-items-center justify-content-between mt-8">
+                                                        <button class="btn btn-primary">
+                                                            <span class="d-none d-sm-inline">Submit</span>
+                                                        </button>
+                                                    </div>
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="accordion-item">
+                                    <h3 class="accordion-header">
+                                        <a class="accordion-button collapsed" href="#paypal" data-bs-toggle="collapse">
+                                            <i class="ri-paypal-line fs-lg me-2 align-middle"></i>
+                                            Service History
+                                        </a>
+                                    </h3>
+                                    <div class="accordion-collapse collapse" id="paypal" data-bs-parent="#payment-method">
+                                        
+
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-hover table-borderless fs-sm mb-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="align-middle">Sl No</th>
+                                                        <th class="align-middle">Category</th>
+                                                        <th class="align-middle">Brand</th>
+                                                        <th class="align-middle">Model</th>
+                                                        <th class="align-middle">Requested Date</th>
+                                                        <th class="align-middle">Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+    
+                                                    {% for i in service_product %}
+                                                    <tr>
+                                                        <td class="align-middle">
+                                                         {{forloop.counter}}
+                                                        </td>
+                                                        <td class="align-middle">
+                                                            <span class="text-dark fw-medium">{{ i.category }}</span>
+                                                        </td>
+                                                        <td class="align-middle">
+                                                            <span class="text-dark fw-medium">{{i.brand}}</span>
+                                                        </td>
+                                                        <td class="align-middle">
+                                                            <span class="text-dark fw-medium">{{i.model}}</span>
+                                                        </td>
+                                                        <td class="align-middle">
+                                                            <span class="text-dark fw-medium">{{i.date|date:"j M, Y"}}</span>
+                                                        </td>
+                                                        <td class="align-middle">
+                                                            {% if i.status == 0 %}
+                                                            <span class="text-dark fw-medium"><a class="btn btn-sm btn-danger" >Requested</a></span>
+                                                            {% else %}
+                                                            <span class="text-dark fw-medium"><a class="btn btn-sm btn-success" >Accepted</a></span>
+                                                            {% endif %}
+                                                        </td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                    
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+
+                                    </div>
+                                </div>                            
+                            </div>
+                            <!-- Accordion-->
+                        </div>
+
+
+<!-- ############################## -->
+
+
+                    <script>
+                                                    
+                        function validateform()
+                        {
+                            var a=document.getElementById('oldpss').value.trim();
+                            var b=document.getElementById('pss').value.trim();
+                            var c=document.getElementById('cpss').value.trim();
+
+                            var passpatern=/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/;
+
+                            if(a=="")
+                            {
+                                document.getElementById('ops').style.display="block";
+                                document.getElementById('ops').innerHTML="**please enter old Password";
+                                return false;
+                            }
+                            else{
+                                    document.getElementById('ops').style.display="none";            
+                                }
+                                
+                            if(b=="")
+                            {
+                                document.getElementById('ps').style.display="block";
+                                document.getElementById('ps').innerHTML="**please enter new Password";
+                                return false;
+                            }
+
+                            if (!b.match(passpatern))
+                            {
+                                document.getElementById('ps').style.display="block";
+                                document.getElementById('ps').innerHTML="**Min length 8 | One Uppercase |One lowercase | One number";
+                                return false;
+                            }
+                            else{
+                                    document.getElementById('ps').style.display="none";
+                                }
+
+                                if(c=="")
+                            {
+                                document.getElementById('cps').style.display="block";
+                                document.getElementById('cps').innerHTML="**please enter Confirm Password";
+                                return false;
+                            }
+                            else{
+                                    document.getElementById('cps').style.display="none";
+                                    
+                                }
+                                if(b!=c)
+                                {
+                                    document.getElementById('ps').style.display="block";
+                                    document.getElementById('ps').innerHTML="**Password doesn't match";
+                                    return false;
+                                }
+                                else{
+                                        document.getElementById('ps').style.display="none";
+                                        return true;
+                                    }
+                            }
+                        </script>
+
+
+
+
+                             <!-- Change Password -->
+                             <div class="tab-pane fade" id="pills-password" role="tabpanel" aria-labelledby="pills-profile-tab">
+                                <div class="border border-gray-200 rounded-3 p-4">
+                                    <form method="post" action="{% url 'change_password' %}" novalidate="novalidate" onsubmit="return validateform();">
+                                    {% csrf_token %}
+                                        
+                                        <h6 class="pb-4 mb-4 border-bottom">Change Password</h6>
+                                        <!-- Title -->
+            
+                                            <div class="col-sm-6">
+                                                <div class="mb-4">
+                                                    <label class="form-label" for="billing-fn">Old Password</label>
+                                                    <input class="form-control" type="password" name="oldpass" id="oldpss" onblur="return validateform()" onKeyUp="return validateform()">
+                                                    <span id="ops" style="color: red;font-size:12px;"></span>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-sm-6">
+                                                <div class="mb-4">
+                                                    <label class="form-label" for="billing-fn">New Password</label>
+                                                    <input class="form-control" type="password" name="pass" id="pss" onblur="return validateform()" onKeyUp="return validateform()">
+                                                    <span id="ps" style="color:red;font-size:12px;"></span>
+                                                </div>
+                                            </div>
+            
+                                            <div class="col-sm-6">
+                                                <div class="mb-4">
+                                                    <label class="form-label" for="billing-ln">Confirm Password</label>
+                                                    <input class="form-control" id="cpss" type="password" onblur="return validateform()" onKeyUp="return validateform()">
+                                                    <span id="cps" style="color:red;font-size:12px;"></span>
+                                                </div>
+                                            </div>
+            
+                                     
+                                        <div class="d-none d-lg-flex align-items-center justify-content-between mt-8">
+                                            <button class="btn btn-primary">
+                                                <span class="d-none d-sm-inline">Submit</span>
+                                            </button>
+                                        </div>
+                                </form>
+                            </div>
+                         </div>
+                        </div>
+                    </aside>
+                    <!-- Content -->
+                </div>
+            </div>
+            <!-- Product Category -->
+        </main>
+        <!-- Page -->
+
+{% endblock %}

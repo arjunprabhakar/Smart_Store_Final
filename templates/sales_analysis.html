@@ -1,0 +1,160 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+<style>
+    .aa{
+        width: 200px;
+        border-radius: 5px;
+        height:40px;
+        font-weight:bold;
+        margin-bottom: 10px;
+    }
+    .btns{
+        border: none;
+        color: #fff;
+        background-color: rgb(255, 119, 0);
+        border-radius:5px;
+        height: 40px;
+    }
+    .title{
+      margin-top: -60px;
+      margin-left: 300px;
+      font-weight: bold;
+    }
+    .date_btn{
+      border: none;
+      background-color: #fff;
+    }
+    .card{
+      font-weight:bold;
+      font-size: 20px;
+    }
+</style>
+<div class="container mt-5" >
+  <h4 class="title" >Sales Analysis</h4>
+    <div class="row" >
+  
+      <div class="col-md-8 mx-auto">
+        <div class="card">
+          <div class="card-header">
+            Select Category
+              <form method="get">
+                  <!-- add more options for other months -->
+              </select>
+              <select class="aa" name="category">
+                <option value="1000">---------------------------------</option>
+                <option value="1000">View All</option>
+                {% for i in category %}
+                <option value="{{i.id}}">{{i.name}}</option>
+                {% endfor %}
+              </select><br>
+              <input type="text" value="1" style="display: none;" name="category_option">
+              <button type="submit" class="btns">Show Sales</button>
+              </form>
+          </div>
+            <div class="btn-group" role="group" aria-label="Sales Chart Type">
+            <button type="button" class="btn btn-secondary" onclick="salesChart.config.type='pie'; salesChart.update();">Pie</button>
+            <button type="button" class="btn btn-secondary" onclick="salesChart.config.type='bar'; salesChart.update();">Bar</button>
+            <button type="button" class="btn btn-secondary" onclick="salesChart.config.type='line'; salesChart.update();">Line</button>
+            <button type="button" class="btn btn-secondary" onclick="salesChart.config.type='scatter'; salesChart.update();">scatter</button>
+  
+            </div>
+      <canvas id="salesChart"></canvas>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-header">
+            More Filter Options
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <button class="date_btn">Day wise</button>
+              <div id="daywise-filter" style="display: none;">
+                <form method="get">
+                  <label for="start_date">Select Date:</label><br>
+                  <input class="aa" type="date" name="sinlge_date"><br>
+                  <input type="text" value="2" style="display: none;" name="single_option">
+
+                  <button type="submit" class="btns">Show Sales</button>
+                </form>
+              </div>
+            </li>
+            <!-- ######### For custome date filter ############## -->
+            <li class="list-group-item">
+              <button class="date_btn" data-toggle="collapse" data-target="#custom_filter">Custom Date</button><br>
+              <div id="custom_filter" class="collapse">
+                <form method="get">
+                  <label for="start_date">Start Date:</label><br>
+                  <input class="aa" type="date" name="start_date"><br>
+                  <label for="end_date">End Date:</label><br>
+                  <input class="aa" type="date" name="end_date"><br>
+                  <input type="text" value="3" style="display: none;" name="custom_option">
+
+                  <button type="submit" class="btns">Show Sales</button>
+                </form>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+  
+    </div>
+  </div>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+  <script>
+  
+  
+      var salesData = {
+          labels: [
+              {% for item in product_data %}
+                  "{{ item.name }}",
+              {% endfor %}
+          ],
+          datasets: [{
+            label: "Total sales",
+            backgroundColor: "#5cb85c",
+            data: [
+                {% for item in product_data %}
+                    {{ item.total }},
+                {% endfor %}
+            ]
+        }]
+      };
+  
+      var chartOptions = {
+          scales: {
+              yAxes: [{
+                  ticks: {
+                      beginAtZero: true
+                  }
+              }]
+          }
+      };
+  
+      var salesChart = new Chart("salesChart", {
+          type: 'bar',
+          data: salesData,
+          options: chartOptions
+      });
+
+
+      var daywiseFilter = document.getElementById("daywise-filter");
+  var dateBtn = document.querySelector(".date_btn");
+  
+  dateBtn.addEventListener("click", function() {
+    if (daywiseFilter.style.display === "none") {
+      daywiseFilter.style.display = "block";
+    } else {
+      daywiseFilter.style.display = "none";
+    }
+  });
+      
+  </script>
+{% endblock %}
+

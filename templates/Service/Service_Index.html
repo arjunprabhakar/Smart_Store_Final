@@ -1,0 +1,303 @@
+
+{% extends 'Service/Service_Base.html' %}
+{% load static %}
+{% block content %}
+
+
+
+		<div class="mobile-menu-overlay"></div>
+
+		<div class="main-container">
+			
+			<div class="xs-pd-20-10 pd-ltr-20">
+
+				{% if not user_details %}
+				<div class="card-box pd-20 height-100-p mb-30">
+					<div class="row align-items-center">
+						<div class="col-md-4">
+							<img src="{% static 'vendors/images/banner-img.png' %}" alt="" />
+						</div>
+						<div class="col-md-8">
+							<h4 class="font-20 weight-500 mb-10 text-capitalize">
+								Welcome
+								<div class="weight-600 font-30 text-blue">{{user}}!</div>
+							</h4>
+							<p class="font-18 max-width-600">
+						
+							</p>
+						</div>
+					</div>
+				</div>
+				{% else %}
+				{% for i in user_details %}
+				<div class="card-box pd-20 height-100-p mb-30">
+					<div class="row align-items-center">
+						<div class="col-md-4">
+							<img src="{% static 'vendors/images/banner-img.png' %}" alt="" />
+						</div>
+						<div class="col-md-8">
+							<h4 class="font-20 weight-500 mb-10 text-capitalize">
+								Welcome
+								<div class="weight-600 font-30 text-blue">{{i.fname}}{{i.lname}}</div>
+							</h4>
+							<p class="font-18 max-width-600">
+								{{i.category.name}} Technician 
+							</p>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+				{% endif %}
+				
+
+				{% if not user_details %}
+
+				<div class="card-box pd-20 height-100-p mb-30" style="text-align: center;">
+					<div class="row align-items-center" >
+						
+						<div class="col-md-8" > 
+							<h5>
+								Add your profile Details,then you will receve the product service requests
+							</h5>
+							<a href="{% url 'Service_Profile' %}" style="color:red;font-weight:bold;">Click here</a>
+						</div>
+					</div>
+				</div>
+
+				{% else %}
+				<div class="row pb-10">
+					
+					<!-- <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
+						<div class="card-box height-100-p widget-style3">
+							<div class="d-flex flex-wrap">
+								<div class="widget-data">
+								<a href="{% url 'Service_Product' %}">
+									<div class="weight-700 font-24 text-dark">Active Work</div>
+									<div class="font-14 text-secondary weight-500">
+										----------------------
+									</div>
+								</a>
+
+								</div>
+
+								<div class="widget-icon">
+									<div class="icon" data-color="#00eccf">
+										<i class="icon-copy  ti-list"></i>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div> -->
+					<!-- <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
+						<div class="card-box height-100-p widget-style3">
+							<div class="d-flex flex-wrap">
+								<div class="widget-data">
+									<div class="weight-700 font-24 text-dark">124</div>
+									<div class="font-14 text-secondary weight-500">
+										 Request Accepted
+									</div>
+								</div>
+								<div class="widget-icon">
+									<div class="icon" data-color="#ff5b5b">
+										<span class="icon-copy ti-list"></span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div> -->
+					<!-- <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
+						<div class="card-box height-100-p widget-style3">
+							<div class="d-flex flex-wrap">
+								<div class="widget-data">
+									<div class="weight-700 font-24 text-dark">400+</div>
+									<div class="font-14 text-secondary weight-500">
+										Our Products
+									</div>
+								</div>
+								<div class="widget-icon">
+									<div class="icon">
+										<i
+											class="icon-copy ti-list"
+											aria-hidden="true"
+										></i>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div> -->
+					<!-- <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
+						<div class="card-box height-100-p widget-style3">
+							<div class="d-flex flex-wrap">
+								<div class="widget-data">
+									<div class="weight-700 font-24 text-dark">₹50,000</div>
+									<div class="font-14 text-secondary weight-500">Earning</div>
+								</div>
+								<div class="widget-icon">
+									<div class="icon" data-color="#09cc06">
+										<i class="icon-copy fa fa-money" aria-hidden="true"></i>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div> -->
+				</div>
+
+
+				<!-- For alert Message -->
+				{% include 'alert.html' %}
+
+				<script>
+					setTimeout(function(){
+					if ($('#msg').length > 0){
+						$('#msg').remove();
+						}
+					},4000)
+
+				</script>
+
+				{% if status.status == 0 %}
+				<!-- Servive Request Table Start -->
+				<div class="card-box mb-30">
+					<div class="pb-20">
+						<table class="data-table table stripe hover nowrap">
+							<thead>
+								<tr>
+									<th  style="font-weight:bold;">Sl No</th>
+									<th  style="font-weight:bold;">Requested Date</th>
+									<th  style="font-weight:bold;">Waranty Expired</th>
+									<th  style="font-weight:bold;">Type</th>
+									<th  style="font-weight:bold;">Brand</th>
+									<th  style="font-weight:bold;">Model</th>
+									<th  style="font-weight:bold;">Issue</th>
+									<th  style="font-weight:bold;">Bill</th>
+									<!-- <th  style="font-weight:bold;" class="datatable-nosort">Action</th> -->
+								</tr>
+							</thead>
+							<tbody>
+								{% for i in rqst %}
+								<tr>
+									<td class="table-plus">{{forloop.counter}}</td>
+									<td>{{i.date}}</td>
+									<td>{{i.waranty}}</td>
+									<td>{{i.category}}</td>
+									<td>{{i.brand}}</td>
+									<td>{{i.model}}</td>
+									<td>
+										<div class="dropdown">
+											<a
+												class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle"
+												href="#"
+												role="button"
+												data-toggle="dropdown"
+											>
+												Click here
+											</a>
+											<div
+												class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list"
+											>
+												<p>{{i.issues}}</p>
+												
+											</div>
+										</div>
+
+									</td>
+									<td>
+									<a href="{% url 'download_pdf' i.id %}"><button type="button" class="btn btn-success">Download</button></a>
+									</td>
+									<td>
+										<a href="{% url 'Accept_Request' i.id %}"><button type="button" class="btn btn-danger">Accept</button></a>
+										</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+				{% else %}
+				<div>
+					
+
+
+
+
+				</div>
+				{% endif %}
+
+
+
+				<!-- Simple Datatable End -->
+				{% endif %}
+				<div class="title pb-20 pt-20">
+					<h2 class="h3 mb-0" style="color:#fff;">*********************************************************************************************</h2>
+				</div>
+
+				<div class="row">
+					<div class="col-md-4 mb-20">
+						<div  class="card-box d-block mx-auto pd-20 text-secondary">
+							<div class="img pb-30">
+								<img src="{% static 'vendors/images/aaaa.png' %}" alt="" />
+							</div>
+							<div class="content">
+								<h3 class="h4">Services</h3>
+								<p class="max-width-200">
+									<!-- We provide superior health care in a compassionate maner -->
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4 mb-20">
+						<div class="card-box d-block mx-auto pd-20 text-secondary">
+							<div class="img pb-30">
+								<img src="{% static 'vendors/images/bbbb.jpg' %}" alt="" />
+							</div>
+							<div class="content">
+								<h3 class="h4">Services</h3>
+								<p class="max-width-200">
+									<!-- Look for prescription and over-the-counter drug information. -->
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4 mb-20">
+						<div class="card-box d-block mx-auto pd-20 text-secondary">
+							<div class="img pb-30">
+								<img src="{% static 'vendors/images/paper-map-cuate.svg' %}" alt="" />
+							</div>
+							<div class="content">
+								<h3 class="h4">Locations</h3>
+								<p class="max-width-200">
+									<!-- Convenient locations when and where you need them. -->
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="footer-wrap pd-20 mb-20 card-box" >
+					Smart Store
+				</div>
+			</div>
+		</div>
+	
+{% endblock %}
+	
+		
+
+
+
+<div class="col-lg-4 col-md-6 col-sm-12 mb-30">
+	<div class="pd-20 card-box text-center height-100-p">
+		<h5 class="pt-20 h5 mb-30">
+			A message with custom width, padding and background
+		</h5>
+		<div class="max-width-200 mx-auto">
+			<button
+				type="button"
+				class="btn mb-20 btn-primary btn-block"
+				id="custom-padding-width-alert"
+			>
+				Click me
+			</button>
+		</div>
+	</div>
+</div>

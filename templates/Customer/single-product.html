@@ -1,0 +1,382 @@
+{% extends 'Customer/base.html' %}
+
+{% load static %}
+{% block content %}
+
+
+<div class="bg-light py-4 mb-4 mb-lg-10">
+    <div class="container d-lg-flex justify-content-between align-items-center py-2 py-lg-4">
+        <div class="pe-lg-4 text-center text-lg-start">
+            <h1 class="h3 mb-0">Smart Store</h1>
+        </div>
+        <div class="pt-2 pt-lg-0">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb flex-lg-nowrap justify-content-center justify-content-lg-start">
+                    <li class="breadcrumb-item">
+                        <a class="text-nowrap" href="index.html">
+                            <i class="ri-store-2-line"></i>
+                            Home
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item text-nowrap"><a href="blog-list.html">Shop</a>
+                    </li>
+                    <li class="breadcrumb-item text-nowrap active" aria-current="page">Product page</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- Page Title -->
+
+<!-- Product Card -->
+<div class="container">
+    <div class="shadow-lg rounded-3 p-10 pb-8 mb-10">
+        <div class="row g-5 g-lg-10">
+
+
+
+            <!-- Product gallery -->
+            <div class="col-lg-7">
+                <div class="swiper-gallery">
+                    <div class="swiper swiper-gallery-body product-gallery">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <div class="swiper-gallery-image">
+                                    <img src="{{product.image.url}}" />
+                                </div>
+                            </div>
+                            
+                            {% for i in image %}
+                                <div class="swiper-slide">
+                                    <div class="swiper-gallery-image">
+                                        <img src="{{i.image.url}}"/>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            
+
+                        </div>
+                    </div>
+                    <div thumbsSlider="" class="swiper swiper-gallery-body product-gallery-thumbs">
+                        <div class="swiper-wrapper">
+                            
+                            {% for i in image %}
+                                <div class="swiper-slide">
+                                    <div class="swiper-gallery-thumb-image">
+                                        <img src="{{i.image.url}}" />
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Product gallery -->
+
+            <!-- Product details -->
+            <div class="col-lg-5">
+                <div class="product-details">
+                    <h5 class="product-title fs-4">
+                        <a href="#">{{product.name}}</a>
+                    </h5>
+
+                    <div class="d-flex align-items-center border-bottom pb-2 mb-2">
+                        <span class="star-rating star-{{product.rate |floatformat:0|truncatechars:1 }} fs-6 align-middle"></span>
+                        <!-- <span class="d-inline-block fs-sm ms-2">35 Reviews</span> -->
+                    </div>
+
+                    <!-- Product Price -->
+                    <div class="product-price mb-3">
+                        <div class="row g-2">
+                            <div class="col-auto d-flex flex-column justify-content-center">
+                                <span class="text-accent fs-2">₹{{product.selling_price}}</span>
+                            </div>
+                            <div class="col d-flex flex-column justify-content-center">
+                                <del class="text-muted"><span class="fs-sm">₹{{product.original_price}}</span></del>
+                                <span class="text-danger fs-sm mt-n1">Stock : {{product.stock}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product Price -->
+
+                    
+
+                    <div class="d-flex align-items-center">
+                      
+
+                        <!-- Button -->
+                        <a class="btn btn-primary d-flex align-items-center justify-content-center w-100" href="{%  url 'add_cart' product.id %}">
+                            <i class="ri-shopping-cart-2-line"></i>
+                            <span class="d-none d-sm-inline ms-2">Add to Cart</span>
+                        </a>
+                        <!-- Button -->
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="d-flex pt-2 mb-4">
+                        <div class="w-50 me-3">
+                            <a class="btn btn-secondary d-block w-100" href="{%  url 'add_wishlist' product.id %}">
+                                <span class="d-none d-sm-inline">Add to </span>
+                                Wishlist
+                            </a>
+                        </div>
+                      
+                    </div>
+                    <!-- Buttons -->
+
+                    <!-- Info List -->
+                    <h5 class="h6 mb-3 py-2 border-bottom"><i class="ri-information-line text-muted fs-lg align-middle me-2"></i> description</h5>
+
+                    <p>{{product.description}}</p>
+                    <!-- Info List -->
+                </div>
+            </div>
+            <!-- Product details -->
+        </div>
+    </div>
+</div>
+<!-- Product Card -->
+
+<!-- Product Description -->
+<div class="container">
+    <div class="border border-gray-200 rounded-3 mb-10">
+        <ul class="nav nav-tabs mb-0"role="tablist">
+           
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#specs" type="button" role="tab" aria-selected="false">Specifications</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab" aria-selected="false">Reviews ({{count}})</button>
+            </li>
+        </ul>
+
+        <div class="p-5 p-md-8">
+            <div class="tab-content">
+                
+                
+                <!-- Specs Tab -->
+                <div class="tab-pane fade show active" id="specs" role="tabpanel">
+                    <div class="row g-10">
+                        <div class="col-12 col-md-6">
+                            <h6 class="text-accent border-bottom pb-2 mb-2">General </h6>
+                            <ul class="list-unstyled fs-sm pb-2">
+                                <li class="d-flex justify-content-between"><span class="text-muted">Category:</span><span>{{product.category}}</span></li>
+                                <li class="d-flex justify-content-between"><span class="text-muted">Subcategory interface:</span><span>{{product.subcategory}}</span></li>                                            
+                                <li class="d-flex justify-content-between"><span class="text-muted">Spec:</span><span>{{product.description}}</span></li>
+                            </ul>
+                            
+                                                                 
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <h6 class="text-accent border-bottom pb-2 mb-2">Price Details</h6>
+                            <ul class="list-unstyled fs-sm pb-2 mb-0">
+                                <li class="d-flex justify-content-between"><span class="text-muted">Original price:</span><span>{{product.original_price}}</span></li>
+                                <li class="d-flex justify-content-between"><span class="text-muted">Selling price:</span><span>{{product.selling_price}}</span></li>
+                                <li class="d-flex justify-content-between"><span class="text-muted">Discount:</span><span>{{product.percentage}} %</span></li>
+                            </ul>
+                            
+                        </div>
+                    </div>
+                </div>
+                <!-- Specs Tab -->
+
+               
+               
+               
+               
+                <!-- Reviews Tab -->
+                <div class="tab-pane fade" id="reviews" role="tabpanel">
+                    <div class="row g-4 g-md-10">
+                        <div class="col-12 col-md-7">
+
+
+
+                            {% for i in review %}
+                                <!-- Comment -->
+                                <div class="card shadow border-0 mb-5">
+                                    <div class="card-body">
+                                        <div class="row g-0">
+                                            <div class="col-auto">
+                                                <!-- Avatar -->
+                                                <a class="blog-article-meta-link" href="#" style="font-size:20px;font-weight:bold;">
+                                                        <i class="ri-user-line" ></i>
+                                                </a>
+                                                <!-- Avatar -->
+                                            </div>
+                                            <div class="col">
+                                                <!-- Name -->
+                                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                                    <h6 class="mb-0 fs-base" style="margin-left:5px;margin-top: 5px;">{{i.user}}</h6>
+                                                    <span class="star-rating star-{{i.rating}}"></span>
+                                                </div>
+                                                <!-- Name -->
+                                
+                                                <!-- Comment -->
+                                                <p class="fs-md mb-2">{{i.review}}</p>
+                                                <!-- Comment -->
+                                
+                                                <!-- Meta -->
+                                                <div class="d-flex align-items-center justify-content-between">
+                                                    <!-- Date -->
+                                                    <a href="#" class="d-flex align-items-center blog-article-meta-link"><i class="ri-calendar-line me-2"></i>{{i.date|date:"j M, Y"}}</a>
+                                                    <!-- Date -->
+                                
+                                                    <!-- Actions -->
+                                                    <div class="d-flex align-items-center">
+                                                        <span class="likes me-3">
+                                                        
+                                                        </span>
+                                                        <span class="dislikes">
+                                                        
+                                                        </span>
+                                                    </div>
+                                                    <!-- Actions -->
+                                                </div>
+                                                <!-- Meta -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Comment -->
+                            {% endfor %}
+
+
+
+                            
+                        </div>
+
+                        <div class="col-12 col-md-5">
+                            <div class="card bg-light border-gray-200">
+                                <div class="card-body">
+                                    <h4 class="mb-2">Add review</h4>
+                                    <form class="needs-validation" method="post" novalidate action="{% url 'review' product.id %}">
+								        {% csrf_token %}
+                                        <div class="mb-4">
+                                            <label class="form-label" for="review-rating">Your rating</label>
+                                            <select class="form-select" required id="review-rating" name="rate">
+                                                <option value="5">5 stars</option>
+                                                <option value="4">4 stars</option>
+                                                <option value="3">3 stars</option>
+                                                <option value="2">2 stars</option>
+                                                <option value="1">1 star</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label class="form-label" for="review-text">Review<span>*</span></label>
+                                            <textarea class="form-control" name="message" rows="5" required id="review-text"></textarea>
+                                            <div class="invalid-feedback">Please leave your review.</div>
+                                        </div>                                                    
+                                        <button class="btn btn-primary btn-shadow d-block w-100" type="submit">Submit</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Reviews Tab -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slider -->
+<div class="container mb-4 mb-lg-10">
+    <!-- Heading -->
+    <div class="d-flex flex-wrap align-items-center justify-content-between border-bottom border-gray-300 pb-4 mb-4">
+        <h2 class="h3 mb-0 me-2">Same category products</h2>
+        <div class="ms-0">
+            <ul class="nav">
+                <li class="nav-item me-3">                                
+                    <button class="btn btn-link recently-swiper-button-prev nav-link link-info link-hover-primary p-0" type="button" title="Previous">
+                        <i class="ri-arrow-left-s-line fs-4"></i>
+                    </button>
+                </li>
+                <li class="nav-item">                                
+                    <button class="btn btn-link recently-swiper-button-next nav-link link-info link-hover-primary p-0" type="button" title="Next">
+                        <i class="ri-arrow-right-s-line fs-4"></i>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- Heading -->
+
+    <!-- Slider -->
+    <div class="recently-swiper m-n4">
+        <div class="swiper recently-swiper-body p-4">
+            <div class="swiper-wrapper">
+
+
+
+                {% if category_product %}
+                    {% for i in category_product %}
+                        <!-- Swiper Slide -->
+                        <div class="swiper-slide">
+                            <div class="card card-product h-100">
+                                <!-- Badges -->
+                                <div class="product-badges">
+                                    <span class="badge bg-danger">{{i.percentage}}%</span>
+                                </div>
+                                <!-- Badges -->
+
+                                <!-- Buttons -->
+                                <div class="product-buttons">
+                                    <a class="btn-product btn-wishlist" href="{%  url 'add_wishlist' i.id %}"  title="Add to wishlist"><i class="ri-heart-line"></i></a>
+                                </div>
+                                <!-- Buttons -->
+
+                                <!-- Preview Image -->
+                                <a class="card-img-top d-block overflow-hidden flex-shrink-0"  href="{%  url 'singleproduct' i.id %}">
+                                    <img class="img-fluid" src="{{i.image.url}}" style="height:200px;width: 250px;" alt="Product">
+                                </a>
+                                <!-- Preview Image -->
+
+                                <div class="card-body d-flex flex-column align-items-start flex-grow-1 h-100 rounded-3 py-4">
+                                    <!-- Product Category -->
+                                    <a class="product-category d-block link-dark fs-sm pb-1">{{i.category.name}}</a>
+                                    <!-- Product Category -->
+
+                                    <!-- Product Title -->
+                                    <h3 class="product-title flex-grow-1">
+                                        <a  href="{%  url 'singleproduct' i.id %}">{{i.name}}</a>
+                                    </h3>
+                                    <!-- Product Title -->
+
+                                    <!-- Star Rating -->
+                                    <span class="star-rating star-{{i.rate |floatformat:0|truncatechars:1 }}"></span>
+                                    <!-- Star Rating -->
+
+                                    <div class="d-flex align-items-center justify-content-between w-100">
+                                        <!-- Product Price -->
+                                        <div class="product-price">
+                                            <span class="text-danger d-block mb-n2 fs-5">₹{{i.selling_price}}
+                                            </span>
+
+                                            <del class="text-muted"><small>₹{{i.original_price}}</small></del>
+                                        </div>
+                                        <!-- Product Price -->
+
+                                        <!-- Button -->
+                                        <a class="btn btn-sm btn-outline-primary py-1 px-3" title="Add to cart" href="{%  url 'add_cart' i.id %}"><i class="ri-shopping-cart-line fs-5"></i></a>
+                                        <!-- Button -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Swiper Slide -->
+                    {% endfor %}
+                {% endif %}
+
+                
+            </div>
+        </div>
+    </div>
+    <!-- Slider -->
+</div>
+</main>
+<!-- Slider -->
+
+{% endblock %}
